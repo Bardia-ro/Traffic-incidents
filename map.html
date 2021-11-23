@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trafic viewer</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Work+Sans:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+  margin: 0;
+  font-family: "Work Sans", sans-serif;
+  font-size: 1.6rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Oswald", sans-serif;
+}
+
+figure {
+  margin: 0;
+}
+
+.formItem label {
+  display: block;
+  text-align: center;
+  line-height: 150%;
+  font-size: .85em;
+}
+
+div {
+  text-align: center;
+}
+
+#orderName {
+  vertical-align: middle;
+}
+
+#orderNo {
+  float: left;
+}
+
+.siteheader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4rem;
+}
+
+.site-title {
+  margin-top: 2rem;
+  margin-bottom: 4rem;
+  font-family: "Oswald", sans-serif;
+  font-size: 4rem;
+  font-weight: 200;
+}
+
+.siteheader:after {
+  display: block;
+  margin: 4rem 0;
+  content: "⚍⚌⚍⚍⚌⚍⚍⚌⚍⚍⚌⚍⚍⚌⚍⚍⚌⚍⚍⚌⚍⚍⚌⚍⚍⚌⚍⚍⚌⚍⚍⚌⚍⚍⚌⚍";
+}
+
+.maincontent {
+  margin: 0 auto;
+  padding: 0 1rem;
+  max-width: 60rem;
+}
+
+.page-header {
+  margin-bottom: 3rem;
+}
+
+.page-header__heading {
+  margin-top: -1rem;
+  text-align: center;
+}
+
+.page-header:after {
+  margin: 4rem auto;
+  display: block;
+  content: "";
+  border-bottom: 3px solid black;
+  width: 4rem;
+}
+
+
+
+    </style>
+  </head>
+  <body>
+    <header class="siteheader">
+      <div class="site-title">Welcome to trafic viewer</div>
+      <div class="site-description">please choose an option from the drop down box and click show in order to view the trafic incidents for the chosen city</div>
+     
+    </header>
+    <div id = "divv">
+    <label for="city">Choose a city:</label>
+    
+    <select name="city" id="city">
+      <option value="New York">New York</option>
+      <option value="Los Angeles">Los Angeles</option>
+      <option value="Chicago">Chicago</option>
+      <option value="Seattle">Seattle</option>
+      <option value="Louisville">Louisville</option>   
+    </select>
+    <button type="button" onclick="getChosenItem()">Submit</button>
+    <p id="mycity" ></p>
+    </div>
+    
+    <main class="maincontent"></main>
+    <script>
+      function getChosenItem(){
+        let chosenCity = document.getElementById("city").value;
+        document.getElementById("mycity").innerHTML = chosenCity;
+      }
+      const mymap = new Map();
+      
+    const collection = []     
+    </script>
+  </body>
+</html>
