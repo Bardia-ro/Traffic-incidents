@@ -1,6 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css" />
+    
+
+    <script>
+      let lat;
+      let lon;
+      let map;
+      $(document).ready(()=>{
+        $("button").click(function() {
+          let chosenCity = document.getElementById("city").value;
+          document.getElementById("mycity").innerHTML = chosenCity;
+         
+        let city = document.getElementById("city").value;
+        if(city == "New York"){
+           lat = 40.71;
+           lon = -74.00;
+        }
+        else if(city ==  "Los Angeles"){
+             lat = 34.03;
+             lon = -118.15;
+        }
+        else if(city == "Chicago"){
+             lat = 41.53;
+             lon = -87.38;
+        }
+        else if(city == "Seattle"){
+             lat = 47.37;
+             lon = -122.20;
+        }
+        else if(city == "Louisville"){
+             lat = 38.15;
+             lon = -85.46;
+        }
+    
+      L.mapquest.key = 'AGBTa4KWOct6qBEcQDQUmj1c2RlgfTH4';
+      map = L.mapquest.map('map', {
+      center: [lat, lon],
+      layers: L.mapquest.tileLayer('map'),
+      zoom: 13
+      });
+      })
+    });
+
+      $(document).ready(()=>{
+        $("button").click(function() {
+          $.ajax({
+            "url": "http://www.mapquestapi.com/traffic/v2/incidents?key=AGBTa4KWOct6qBEcQDQUmj1c2RlgfTH4&boundingBox=" + (lat - 0.22) + "," + (lon - 0.22)+ "," + (lat + 0.22) + "," + (lon + 0.22) +"&filters=construction,incidents",
+            "type": "GET",
+            "data":{},
+            "dataType":"JSON"
+          })
+          .done((data)=>{
+            let txt = JSON.stringify(data);
+            $("#data").html(txt);
+            parsedtxt = JSON.parse(txt);
+            for (var i = 0; i < parsedtxt["incidents"].length; i++){
+              L.circle([parsedtxt["incidents"][i]["lat"], parsedtxt["incidents"][i]["lng"]], { radius: 2 }).addTo(map);
+            } 
+          })
+        })
+          });
+    </script>
+    
+    
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trafic viewer</title>
@@ -91,10 +157,16 @@ div {
   width: 4rem;
 }
 
+#map {
+  width: 30px;
+  padding: 50px;
+  margin-top: 20px;
+  margin-left: 470px;
+  margin-bottom: 220px;
+}
 
 
-    </style>
-  </head>
+    </style> 
   <body>
     <header class="siteheader">
       <div class="site-title">Welcome to trafic viewer</div>
@@ -111,19 +183,14 @@ div {
       <option value="Seattle">Seattle</option>
       <option value="Louisville">Louisville</option>   
     </select>
-    <button type="button" onclick="getChosenItem()">Submit</button>
+     
+    <button type="button">Submit</button>
     <p id="mycity" ></p>
+    <div id="map" style="width: 100%; height: 530px;"></div>
+    <p id="data" ></p>
     </div>
     
     <main class="maincontent"></main>
-    <script>
-      function getChosenItem(){
-        let chosenCity = document.getElementById("city").value;
-        document.getElementById("mycity").innerHTML = chosenCity;
-      }
-      const mymap = new Map();
-      
-    const collection = []     
-    </script>
+    </head>
   </body>
 </html>
