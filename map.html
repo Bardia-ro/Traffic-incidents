@@ -1,15 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- The following three lines will imoprt mapquest and jquery which will be used to represent the map properly . -->
     <script src="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link type="text/css" rel="stylesheet" href="https://api.mqcdn.com/sdk/mapquest-js/v1.3.2/mapquest.css" />
     
 
     <script>
+      /* 
+        variables which are going to be used in the following order.
+        lat and lon are the latitude and longitude retrived from the city which the user selected.
+        map variable holds the map which is represented.
+      */
       let lat;
       let lon;
       let map;
+      var parsedContent;
+      /*
+        following jquery function will retrieve the city which the user selects and gets the latitude and 
+        longitude of the city. 
+      */
       $(document).ready(()=>{
         $("button").click(function() {
           let chosenCity = document.getElementById("city").value;
@@ -36,7 +47,7 @@
              lat = 38.15;
              lon = -85.46;
         }
-    
+      // the following call will put the map of the chosen city on the screen and stores it in map variable.
       L.mapquest.key = 'AGBTa4KWOct6qBEcQDQUmj1c2RlgfTH4';
       map = L.mapquest.map('map', {
       center: [lat, lon],
@@ -45,7 +56,11 @@
       });
       })
     });
-
+      /*
+        When submit button is clicked the following function, through an AJAX call the url which is being generated is based on
+        the latitude and longitude of the chosen city. when the incidents are retrieved from the URL, the function then can call
+        the handleFunction() to step in and perform the creation of table and circles on the map.
+      */
       $(document).ready(()=>{
         $("button").click(function() {
           $.ajax({
@@ -57,33 +72,44 @@
           .done((data)=>{
             let txt = JSON.stringify(data);
             $("#data").html(txt);
-            parsedtxt = JSON.parse(txt);
-            var appendThis = '<tbody>';
-            let num=1;
-            for (var i = 0; i < parsedtxt["incidents"].length; i++){
-              L.circle([parsedtxt["incidents"][i]["lat"], parsedtxt["incidents"][i]["lng"]], { radius: 2 }).addTo(map);
-              appendThis += '<tr>';
-              appendThis+= '<td>' + num + "   " +parsedtxt["incidents"][i]["shortDesc"]+ "." + '</td>' ;
-              appendThis+= '</tr>';
-              ++num;
-            } 
-            appendThis+= '</tbody>';
-            document.getElementById('descriptions').innerHTML = appendThis;
+            parsedContent = JSON.parse(txt);
+            handleResponse();
           })
         })
       });
+      /*
+        a seperate function is implemented in order to process the circles on the map and the table which has the information of each incident.
+        The parsed[Content]["incident"] is the array in the JSON file which holds the data of the incidents, such as latitude(lat), 
+        longitude(lng), A short description of that incident(shortDesc).
+      */
+      function handleResponse(){
+          var appendThis = '<tbody>';
+          let num=1;
+          for (var i = 0; i < parsedContent["incidents"].length; i++){
+            L.circle([parsedContent["incidents"][i]["lat"], parsedContent["incidents"][i]["lng"]], { radius: 2 }).addTo(map);
+            appendThis += '<tr>';
+            appendThis+= '<td>' + num + "   " +parsedContent["incidents"][i]["shortDesc"]+ "." + '</td>' ;
+            appendThis+= '</tr>';
+            ++num;
+          } 
+            appendThis+= '</tbody>';
+            document.getElementById('descriptions').innerHTML = appendThis;
+      }
     </script>
     
     
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trafic viewer</title>
+    <!-- The following link provides the css and styling and is put here in order to design the page, the course in which this css
+    is imported is Essential javascript training on Linked in learning @link: https://www.linkedin.com/learning/javascript-essential-training -->
     <link
       href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Work+Sans:wght@100..900&display=swap"
       rel="stylesheet"
     />
     <style>
 
+/* the css which is responsible for the font size and page design. */
 
 body {
   margin: 0;
@@ -149,7 +175,7 @@ div {
       <div class="site-description">please choose an option from the drop down box and click submit in order to view the trafic incidents for the chosen city. if you wish to choose
         another option after the first choice please reload the page and make a new choice.
       </div>
-     
+      <!-- the drop down box which the user uses to choose a city from the following options. -->
     </header>
     <div id = "divv">
     <label for="city">Choose a city:</label>
@@ -161,12 +187,15 @@ div {
       <option value="Seattle">Seattle</option>
       <option value="Louisville">Louisville</option>   
     </select>
-     
+     <!-- The submit button which after pressing brings up the map and details about incidents -->
     <button type="button">Submit</button>
+    <!-- id of the city which prints out the chosen city below the dropdown box. -->
     <p id="mycity" ></p>
+    <!-- map id to show the map on the screen-->
     <div id="map" style="width: 1000px; height: 530px;"></div>
     
     </div>
+    <!-- table id to show the detals of incidents below the map-->
     <div id="myTable">
     <table>
       <tbody id = "descriptions">
