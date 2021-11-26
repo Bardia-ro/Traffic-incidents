@@ -64,7 +64,7 @@
       $(document).ready(()=>{
         $("button").click(function() {
           $.ajax({
-            "url": "http://www.mapquestapi.com/traffic/v2/incidents?key=AGBTa4KWOct6qBEcQDQUmj1c2RlgfTH4&boundingBox=" + (lat - 0.22) + "," + (lon - 0.22)+ "," + (lat + 0.22) + "," + (lon + 0.22) +"&filters=construction,incidents",
+            "url": `http://www.mapquestapi.com/traffic/v2/incidents?key=AGBTa4KWOct6qBEcQDQUmj1c2RlgfTH4&boundingBox=${(lat - 0.22)},${(lon - 0.22)},${(lat + 0.22)},${(lon + 0.22)}&filters=construction,incidents`,
             "type": "GET",
             "data":{},
             "dataType":"JSON"
@@ -96,7 +96,7 @@
             document.getElementById('descriptions').innerHTML = appendThis;
       }
     </script>
-    
+     
     
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -171,7 +171,7 @@ div {
     </style> 
   <body>
     <header class="header">
-      <div class="site-title">Welcome to traffic viewer</div>
+      <div class="site-title">Welcome to ...</div>
       <div class="site-description">please choose an option from the drop down box and click submit in order to view the trafic incidents for the chosen city. if you wish to choose
         another option after the first choice please reload the page and make a new choice.
       </div>
